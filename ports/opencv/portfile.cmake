@@ -8,10 +8,6 @@ vcpkg_from_github(
     REF ${OPENCV_PORT_VERSION}
     SHA512 d653a58eb5e3939b9fdb7438ac35f77cf4385cf72d5d22bfd21722a109e1b3283dbb9407985061b7548114f0d05c9395aac9bb62b4d2bc1f68da770a49987fef
     HEAD_REF master
-)
-
-vcpkg_apply_patches(
-    SOURCE_PATH ${SOURCE_PATH}
     PATCHES
       "${CMAKE_CURRENT_LIST_DIR}/0001-winrt-fixes.patch"
       "${CMAKE_CURRENT_LIST_DIR}/0002-install-options.patch"
@@ -19,8 +15,6 @@ vcpkg_apply_patches(
       "${CMAKE_CURRENT_LIST_DIR}/0004-use-find-package-required.patch"
       "${CMAKE_CURRENT_LIST_DIR}/0005-remove-protobuf-target.patch"
 )
-
-file(WRITE "${CURRENT_BUILDTREES_DIR}/src/opencv-${OPENCV_PORT_VERSION}/rework.stamp")
 
 string(COMPARE EQUAL "${VCPKG_CRT_LINKAGE}" "static" BUILD_WITH_STATIC_CRT)
 
@@ -374,7 +368,10 @@ string(REPLACE "PREFIX}/bin"
                "PREFIX}/debug/bin" OPENCV_CONFIG_LIB "${OPENCV_CONFIG_LIB}")
 file(WRITE ${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules-debug.cmake "${OPENCV_CONFIG_LIB}")
 
-file(RENAME ${CURRENT_PACKAGES_DIR}/debug/share/opencv/OpenCVModules.cmake ${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake)
+file(READ ${CURRENT_PACKAGES_DIR}/debug/share/opencv/OpenCVModules.cmake _contents)
+string(REPLACE "${CURRENT_INSTALLED_DIR}" "\${_IMPORT_PREFIX}" _contents "${_contents}")
+string(REPLACE ";\${_IMPORT_PREFIX}/debug/" ";\${_IMPORT_PREFIX}/\\\$<\\\$<CONFIG:DEBUG>:debug/>" _contents "${_contents}")
+file(WRITE ${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake "${_contents}")
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
