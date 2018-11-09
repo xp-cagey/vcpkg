@@ -8,11 +8,16 @@ vcpkg_from_github(
     HEAD_REF v1.x
 )
 
+set(SPDLOG_BUILD_TESTING OFF)
+if(NOT VCPKG_CMAKE_SYSTEM_NAME)
+    set(SPDLOG_BUILD_TESTING ON)
+endif()
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
     OPTIONS
-        -DSPDLOG_BUILD_TESTING=OFF
+        -DSPDLOG_BUILD_TESTING=${SPDLOG_BUILD_TESTING}
 )
 
 vcpkg_install_cmake()
