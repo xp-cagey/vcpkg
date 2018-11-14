@@ -12,16 +12,17 @@ include(vcpkg_common_functions)
 # Required to run build/generate_escape_tables.py et al.
 vcpkg_find_acquire_program(PYTHON3)
 get_filename_component(PYTHON3_DIR "${PYTHON3}" DIRECTORY)
-set(ENV{PATH} "$ENV{PATH};${PYTHON3_DIR}")
+vcpkg_add_to_path("${PYTHON3_DIR}")
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO facebook/folly
-    REF v2018.07.02.00
-    SHA512 dcec94b3ab47deef124797bb2616544e4fba8b62ee8886d3b2c604534dafcca810ecf111b86032db15a9a77c89aa0139be047e2761e8df0d067dd72a584dcc13
+    REF v2018.10.29.00
+    SHA512 82714564713224e1a8dcfa0d7722cf9396374da29daf6afdb7ea058d33eaedd9e41b2ed9033bc3c3cbb6a51fa0e5cd0a48fedecfa110a13a1ca308d2a7518d1b
     HEAD_REF master
     PATCHES
-        ${CMAKE_CURRENT_LIST_DIR}/find-gflags.patch
+        find-gflags.patch
+        no-werror.patch
 )
 
 file(COPY
