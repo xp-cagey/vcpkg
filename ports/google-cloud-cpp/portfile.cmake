@@ -11,7 +11,10 @@ vcpkg_from_github(
     REF v0.3.0
     SHA512 90f876ebf4bea40c5bc12d2bd20d27b48202f951d57a68b657c07b7d468b2ac5a00e39a3a6fca48f92030d89ba7d9706eb52b3c8e734b392aee63632af042b5d
     HEAD_REF master
-    PATCHES include-protobuf.patch
+    PATCHES
+        include-protobuf.patch
+        missing-include.patch
+        constexpr-byteswap.patch
 )
 
 set(GOOGLEAPIS_VERSION 6a3277c0656219174ff7c345f31fb20a90b30b97)

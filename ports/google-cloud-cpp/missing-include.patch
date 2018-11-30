@@ -1,0 +1,12 @@
+diff --git a/google/cloud/internal/getenv.cc b/google/cloud/internal/getenv.cc
+index edbf5fa..6218df2 100644
+--- a/google/cloud/internal/getenv.cc
++++ b/google/cloud/internal/getenv.cc
+@@ -16,6 +16,7 @@
+ #ifdef _WIN32
+ // We need _dupenv_s()
+ #include <stdlib.h>
++#include <memory>
+ #else
+ // On Unix-like systems we need setenv()/unsetenv(), which are defined here:
+ #include <cstdlib>
