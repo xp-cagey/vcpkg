@@ -1,20 +1,15 @@
-if (VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)
-    message(STATUS "Warning: Dynamic building not supported yet. Building static.")
-    set(VCPKG_LIBRARY_LINKAGE static)
-endif()
-
 include(vcpkg_common_functions)
+
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO GoogleCloudPlatform/google-cloud-cpp
-    REF v0.3.0
+    REF a0f27355af654605b321e764a7dd9464c54340a3
     SHA512 90f876ebf4bea40c5bc12d2bd20d27b48202f951d57a68b657c07b7d468b2ac5a00e39a3a6fca48f92030d89ba7d9706eb52b3c8e734b392aee63632af042b5d
     HEAD_REF master
     PATCHES
         include-protobuf.patch
-        missing-include.patch
-        constexpr-byteswap.patch
 )
 
 set(GOOGLEAPIS_VERSION 6a3277c0656219174ff7c345f31fb20a90b30b97)
